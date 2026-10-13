@@ -24,9 +24,25 @@ void main() {
     }
   }
 
-  void tambahstok() {
+  void tambahbarang() {
+    print("============================================");
     print("Masukan Nama Barang: ");
     var inputnama = stdin.readLineSync() ?? '';
+    print("============================================");
+    print("Masukan Jumlah Barang: ");
+    var inputjumlah = stdin.readLineSync() ?? '0';
+
+    // Menambahkan barang baru ke daftar
+    daftarBarang.add({'nama': inputnama, 'jumlah': int.parse(inputjumlah)});
+    print("============================================");
+    print("Barang $inputnama berhasil ditambahkan");
+  }
+
+  void tambahstok() {
+    print("============================================");
+    print("Masukan Nama Barang: ");
+    var inputnama = stdin.readLineSync() ?? '';
+    print("============================================");
     print("Masukan Jumlah Barang: ");
     var inputjumlah = stdin.readLineSync() ?? '0';
 
@@ -36,19 +52,15 @@ void main() {
       orElse: () => <String, dynamic>{},
     );
 
-    if (barang.isNotEmpty) {
-      // Jika barang ditemukan, tambahkan stok
-      barang['jumlah'] = (barang['jumlah'] as int) + int.parse(inputjumlah);
-      print("Stok barang $inputnama berhasil ditambahkan");
-    } else {
-      // Jika barang tidak ditemukan, tambahkan sebagai barang baru
-      daftarBarang.add({'nama': inputnama, 'jumlah': int.parse(inputjumlah)});
-      print("Barang $inputnama berhasil ditambahkan");
-    }
+    // Jika barang ditemukan, tambahkan stok
+    barang['jumlah'] = (barang['jumlah'] as int) + int.parse(inputjumlah);
+    print("============================================");
+    print("Stok barang $inputnama berhasil ditambahkan");
   }
 
   void lihatstok() {
     if (daftarBarang.isEmpty) {
+      print("============================================");
       print("Belum ada barang.");
       return;
     }
@@ -58,7 +70,39 @@ void main() {
     }
   }
 
+  void stokkeluar() {
+    print("============================================");
+    print("Masukan Nama Barang Keluar: ");
+    var inputnama = stdin.readLineSync() ?? '';
+    print("============================================");
+    print("Masukan Jumlah Barang Keluar: ");
+    var inputjumlah = stdin.readLineSync() ?? '0';
+
+    // Mencari barang dalam daftar
+    var barang = daftarBarang.firstWhere(
+      (item) => item['nama'] == inputnama,
+      orElse: () => <String, dynamic>{},
+    );
+
+    if (barang.isNotEmpty) {
+      // Jika barang ditemukan, kurangi stok
+      int jumlahKeluar = int.parse(inputjumlah);
+      if (barang['jumlah'] >= jumlahKeluar) {
+        barang['jumlah'] = (barang['jumlah'] as int) - jumlahKeluar;
+        print("============================================");
+        print("Stok barang $inputnama berhasil dikurangi");
+      } else {
+        print("============================================");
+        print("Stok barang $inputnama tidak cukup");
+      }
+    } else {
+      print("============================================");
+      print("Barang $inputnama tidak ditemukan");
+    }
+  }
+
   void keluar() {
+    print("============================================");
     print("Terima kasih telah menggunakan sistem gudang sederhana");
     exit(0);
   }
@@ -69,20 +113,28 @@ void main() {
     } else {
       print("Menu Sistem Gudang");
       print("============================================");
-      print("1. Tambah Stok");
-      print("2. Lihat Stok");
-      print("3. Keluar");
+      print("1. Tambah Barang");
+      print("2. Tambah Stok");
+      print("3. Lihat Stok");
+      print("4. Stok Keluar");
+      print("5. Keluar");
       print("Pilih Menu: ");
       var inputmenu = stdin.readLineSync();
 
       switch (int.tryParse(inputmenu ?? '')) {
         case 1:
-          tambahstok();
+          tambahbarang();
           break;
         case 2:
-          lihatstok();
+          tambahstok();
           break;
         case 3:
+          lihatstok();
+          break;
+        case 4:
+          stokkeluar();
+          break;
+        case 5:
           keluar();
           break;
         default:
