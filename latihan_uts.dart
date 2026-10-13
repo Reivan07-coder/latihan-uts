@@ -59,12 +59,13 @@ void main() {
   }
 
   void lihatstok() {
+    // kalau daftar barang kosong, tampilkan pesan "Belum ada barang."
     if (daftarBarang.isEmpty) {
       print("============================================");
       print("Belum ada barang.");
       return;
     }
-
+    // menampilkan daftar barang dan jumlahnya
     for (var item in daftarBarang) {
       print("${item['nama']}: ${item['jumlah']}");
     }
